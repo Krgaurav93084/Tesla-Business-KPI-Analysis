@@ -1,0 +1,45 @@
+name: Package Tableau data kit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/tableau-data-kit.yml'
+      - 'tableau/**'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: tesla-validated-quarterly-report
+          run-id: 45620622068
+          github-token: ${{ github.token }}
+          path: tableau-kit/historical
+      - name: Prepare and inspect CSVs
+        run: |
+          cp 'analytics_v2/quarterly.csv' tableau-kit/
+          cp tableau/README.md tableau-kit/
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          root=Path('tableau-kit')
+          files=list(root.rglob('*.csv'))
+          assert files
+          for path in files:
+              with path.open(encoding='utf-8-sig',newline='') as f:
+                  reader=csv.reader(f); headers=next(reader)
+                  count=sum(1 for row in reader if row)
+                  assert len(headers)>1 and count>0,(path,headers,count)
+                  print(f'{path}: {count} rows, {len(headers)} fields')
+          for p in root.rglob('*'):
+              if p.is_file() and p.suffix.lower() not in {'.csv','.md','.json'}:p.unlink()
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tesla-Business-KPI-Analysis-Tableau-data-kit
+          path: tableau-kit/
+          if-no-files-found: error
