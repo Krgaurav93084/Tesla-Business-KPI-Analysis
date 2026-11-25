@@ -1,0 +1,26 @@
+name: Validate Power BI project source
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'powerbi/**'
+      - '.github/workflows/validate-powerbi.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'jsonschema>=4.22,<5' 'referencing>=0.35,<1'
+      - name: Validate Power BI source against official schemas
+        run: python powerbi/validate_source.py powerbi/Tesla
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tesla-PowerBI-project-source
+          path: powerbi/Tesla/
+          if-no-files-found: error
