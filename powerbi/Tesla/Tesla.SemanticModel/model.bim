@@ -1,0 +1,147 @@
+{
+  "name": "Tesla",
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "en-US",
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "quarterly",
+        "columns": [
+          {
+            "name": "quarter_end",
+            "dataType": "dateTime",
+            "sourceColumn": "quarter_end",
+            "summarizeBy": "none",
+            "formatString": "yyyy-MM-dd"
+          },
+          {
+            "name": "revenue_usd_m",
+            "dataType": "int64",
+            "sourceColumn": "revenue_usd_m",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "gross_profit_usd_m",
+            "dataType": "int64",
+            "sourceColumn": "gross_profit_usd_m",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "operating_income_usd_m",
+            "dataType": "int64",
+            "sourceColumn": "operating_income_usd_m",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "production",
+            "dataType": "int64",
+            "sourceColumn": "production",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "deliveries",
+            "dataType": "int64",
+            "sourceColumn": "deliveries",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "inventory_days",
+            "dataType": "int64",
+            "sourceColumn": "inventory_days",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "automotive_revenue_usd_m",
+            "dataType": "int64",
+            "sourceColumn": "automotive_revenue_usd_m",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "energy_revenue_usd_m",
+            "dataType": "int64",
+            "sourceColumn": "energy_revenue_usd_m",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "services_revenue_usd_m",
+            "dataType": "int64",
+            "sourceColumn": "services_revenue_usd_m",
+            "summarizeBy": "none"
+          }
+        ],
+        "measures": [
+          {
+            "name": "Revenue USD M",
+            "expression": "SUM('quarterly'[revenue_usd_m])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Gross Profit USD M",
+            "expression": "SUM('quarterly'[gross_profit_usd_m])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Operating Margin",
+            "expression": "DIVIDE(SUM('quarterly'[operating_income_usd_m]),[Revenue USD M])",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "Deliveries",
+            "expression": "SUM('quarterly'[deliveries])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Production",
+            "expression": "SUM('quarterly'[production])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Gross Margin",
+            "expression": "DIVIDE([Gross Profit USD M],[Revenue USD M])",
+            "formatString": "0.00%"
+          },
+          {
+            "name": "Inventory Days Latest",
+            "expression": "VAR LastQ = MAX('quarterly'[quarter_end]) RETURN CALCULATE(MAX('quarterly'[inventory_days]),'quarterly'[quarter_end] = LastQ)",
+            "formatString": "0"
+          },
+          {
+            "name": "Quarter Count",
+            "expression": "COUNTROWS('quarterly')",
+            "formatString": "0"
+          },
+          {
+            "name": "Energy Revenue USD M",
+            "expression": "SUM('quarterly'[energy_revenue_usd_m])",
+            "formatString": "#,0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "quarterly",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(Web.Contents(\"https://raw.githubusercontent.com/Krgaurav93084/Tesla-Business-KPI-Analysis/main/analytics_v2/quarterly.csv\"), [Delimiter=\",\", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    Types = Table.TransformColumnTypes(Headers, {{\"quarter_end\",type date},{\"revenue_usd_m\",Int64.Type},{\"gross_profit_usd_m\",Int64.Type},{\"operating_income_usd_m\",Int64.Type},{\"production\",Int64.Type},{\"deliveries\",Int64.Type},{\"inventory_days\",Int64.Type},{\"automotive_revenue_usd_m\",Int64.Type},{\"energy_revenue_usd_m\",Int64.Type},{\"services_revenue_usd_m\",Int64.Type}},\"en-US\")",
+                "in",
+                "    Types"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"quarterly\"]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+// Run in Power BI Desktop DAX Query View after Refresh.
+EVALUATE
+ROW(
+    "Revenue USD M", [Revenue USD M],
+    "Gross Profit USD M", [Gross Profit USD M],
+    "Operating Margin", [Operating Margin],
+    "Deliveries", [Deliveries],
+    "Production", [Production],
+    "Gross Margin", [Gross Margin],
+    "Inventory Days Latest", [Inventory Days Latest],
+    "Quarter Count", [Quarter Count],
+    "Energy Revenue USD M", [Energy Revenue USD M]
+)
