@@ -27,3 +27,8 @@ The source report contains historical/academic figures and some values that are 
 
 ## Source
 Based on the supplied report, which discusses Tesla products, PESTLE, Porter Five Forces, SWOT, COVID-19 impact and strategic recommendations.
+
+## Source-backed quarterly analytics (2023–2025)
+See [quarterly dashboard and analysis](analytics_v2/README.md) and [calculated findings](analytics_v2/findings.md). The extension contains 12 official reported quarterly rows, SQL, Python and DAX. The original academic charts are retained separately and should not be used to compare unlike measures.
+
+![Historical financial and operational dashboard](analytics_v2/dashboard.svg)
