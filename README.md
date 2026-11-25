@@ -32,3 +32,6 @@ Based on the supplied report, which discusses Tesla products, PESTLE, Porter Fiv
 See [quarterly dashboard and analysis](analytics_v2/README.md) and [calculated findings](analytics_v2/findings.md). The extension contains 12 official reported quarterly rows, SQL, Python and DAX. The original academic charts are retained separately and should not be used to compare unlike measures.
 
 ![Historical financial and operational dashboard](analytics_v2/dashboard.svg)
+
+## Reproducibility validation — 25 November 2026
+The [GitHub Actions validation run](https://github.com/Krgaurav93084/Tesla-Business-KPI-Analysis/actions/runs/45620622068) passed. It executed the SQLite/Python pipeline, checked all 12 unique quarterly observations, reconciled operating margin, and generated annual and quarterly KPI tables. The 2025 seasonal delivery baseline MAE was 55,378.75 vehicles. The [run artifact](https://github.com/Krgaurav93084/Tesla-Business-KPI-Analysis/actions/runs/45620622068/artifacts/15023857964) includes the generated dashboard PNG, SQLite database, and CSV results (artifact retention applies). The existing dashboard SVG and findings remain available in the repository. This validates calculations against the bundled quarterly CSV, not independently re-audited source filings. The PNG is a Python chart, not a Power BI Desktop screenshot; no native PBIX is claimed.
