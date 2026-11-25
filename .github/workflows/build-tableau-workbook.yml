@@ -1,0 +1,41 @@
+name: Build packaged Tableau workbook
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tableau/build_workbook.py'
+      - '.github/workflows/build-tableau-workbook.yml'
+permissions:
+  contents: write
+  actions: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: Tesla-Business-KPI-Analysis-Tableau-data-kit
+          run-id: 45633970338
+          github-token: ${{ github.token }}
+          path: /tmp/tableau-kit
+      - name: Assemble and structurally validate TWBX
+        run: python tableau/build_workbook.py Tesla /tmp/tableau-kit tableau/workbook
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tesla-Tableau-workbook
+          path: tableau/workbook/
+          if-no-files-found: error
+      - name: Commit packaged workbook to GitHub
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tableau/workbook/
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Publish Tableau packaged workbook and structural validation evidence'
+          git pull --rebase origin main
+          git push origin HEAD:main
