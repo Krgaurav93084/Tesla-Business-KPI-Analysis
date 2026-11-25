@@ -1,0 +1,12 @@
+{
+  "workbook": "Tesla.twbx",
+  "worksheets": 8,
+  "dashboards": 1,
+  "embedded_data_sources": 5,
+  "zip_crc": "passed",
+  "xml_parse": "passed",
+  "dashboard_references": "passed",
+  "data_paths": "passed",
+  "tableau_runtime": "not run",
+  "public_publication": "not done"
+}
